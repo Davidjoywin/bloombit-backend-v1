@@ -1,5 +1,12 @@
 # BLOOMBIT BACKEND VERSION 1
 
+## Set up a virtual environment
+ - python3 -m virtualenv bb_env
+ - bb_env/bin/activate
+
+## Install required framework and library
+ - pip install -r requirements.txt
+
 ## TO set-up:
  - python3 manage.py makemigrations
  - python3 manage.py migrate
