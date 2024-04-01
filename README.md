@@ -2,7 +2,7 @@
 
 ## Set up a virtual environment
  - ```python3 -m virtualenv bb_env```
- -```bb_env/bin/activate```
+ - ```bb_env/bin/activate```
 
 ## Install required framework and library
  - ```pip install -r requirements.txt```
