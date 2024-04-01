@@ -24,7 +24,7 @@ class MakeReservation(APIView):
             )
         return Response(
             {
-                'status': True,
+                'status': False,
                 'message': "Reservation failed",
                 'data': serializer.errors,
                 'statusCode': status.HTTP_400_BAD_REQUEST

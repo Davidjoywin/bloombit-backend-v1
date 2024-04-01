@@ -1,30 +1,49 @@
+import random
+
 from django.shortcuts import get_object_or_404
 from rest_framework.validators import ValidationError
 from rest_framework.serializers import ModelSerializer
 
-from .models import Consultation
+from .models import Professional, Consultation
 
 
 class ConsultationSerializer(ModelSerializer):
     class Meta:
         model = Consultation
         fields = "__all__"
+        extra_kwargs = {
+            "patient": {"required": False, "read_only": False},
+            "professional_assigned": {"required": False, "read_only": True}
+        }
     
-    def create(self):
-        consultation = Consultation.makeAppointment()
+    def create(self, validated_data):
+        consultation = Consultation.makeAppointment(**validated_data)
+
+        # randomly assigned unassigned professional to patients
+        professionals = Professional.objects.filter(booked=False)
+        professional = random.choice(professionals)
+        consultation.professional_assigned = professional
+        professional.booked = True
+        professional.save()
+        consultation.save()
         return consultation
     
-    def validate(self, validated_data):
+    def validate(self, data):
         request = self.context['request']
-        consultation = get_object_or_404(Consultation, pk=id)
-        if request.user.id == consultation.patient.id:
-            professional_assigned = validated_data['professional_assigned']
-            professional_of_choice = validated_data['professional_of_choice']
+        patient = data['patient']
+        
+        if request.user.id == patient.id:
+            professional_assigned = data.get('professional_assigned', False)
+            patient_professional_choice = data.get('professional_of_choice', False)
 
-            if ((professional_assigned.account_type != "professional") or
-                (professional_of_choice.account_type != "professional")):
+            print(patient_professional_choice and patient_professional_choice)
+            if (patient_professional_choice and (patient_professional_choice.booked)):
+                raise ValidationError({"professional": "Professional booked for now"})
+
+            if ((professional_assigned and (professional_assigned.user.account_type != "professional")) or
+                (patient_professional_choice and (patient_professional_choice.user.account_type != "professional"))):
                 raise ValidationError({"professional": "Account type must be professional"})
-            return validated_data
+            return data
         raise ValidationError({"User auth": "User not Authenticated"})
     
     def update(self, instance, validated_data):
