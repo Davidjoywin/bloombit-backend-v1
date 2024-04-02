@@ -19,24 +19,26 @@ class ConsultationSerializer(ModelSerializer):
     def create(self, validated_data):
         consultation = Consultation.makeAppointment(**validated_data)
 
-        # randomly assigned unassigned professional to patients
-        professionals = Professional.objects.filter(booked=False)
-        professional = random.choice(professionals)
-        consultation.professional_assigned = professional
-        professional.booked = True
-        professional.save()
         consultation.save()
         return consultation
     
     def validate(self, data):
         request = self.context['request']
         patient = data['patient']
-        
         if request.user.id == patient.id:
+            professionals = Professional.objects.filter(booked=False)
+            
+            if len(professionals) == 0:
+                raise ValidationError({"profession": "No professional for now"})
+            
+            # randomly assigned unassigned professional to patients
+            professional = random.choice(professionals)
+            professional.booked = True
+            professional.save()
+            data['professional_assigned'] = professional
             professional_assigned = data.get('professional_assigned', False)
             patient_professional_choice = data.get('professional_of_choice', False)
 
-            print(patient_professional_choice and patient_professional_choice)
             if (patient_professional_choice and (patient_professional_choice.booked)):
                 raise ValidationError({"professional": "Professional booked for now"})
 

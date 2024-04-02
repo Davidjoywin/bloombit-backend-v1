@@ -1,4 +1,5 @@
-from datetime import timedelta
+import pytz
+from datetime import timedelta, datetime
 
 from django.db import models
 
@@ -23,7 +24,17 @@ class Consultation(models.Model):
     
     def _setConsultationDuration(self):
         time = self.start_time + timedelta(minutes=self.duration)
-        print(time)
+        time = datetime(
+            time.year,
+            time.month,
+            time.day,
+            time.hour,
+            time.minute,
+            time.second,
+            time.microsecond,
+            tzinfo=pytz.UTC
+        )
+        # print(time)
         return time
     
     @classmethod

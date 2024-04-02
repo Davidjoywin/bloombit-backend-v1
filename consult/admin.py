@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from consult.models import Consultation
+
+
+admin.site.register(Consultation)
