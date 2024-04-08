@@ -60,12 +60,13 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'bloombit.urls'
+
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000",
-    "http://127.0.0.1:8000"
+    "http://localhost:3000",
+    "http://127.0.0.1:3000"
 ]
 
-CORS_ALLOW_CREDENTIALS=True
+CORS_ALLOW_CREDENTIALS=False
 
 TEMPLATES = [
     {
@@ -126,9 +127,18 @@ REST_FRAMEWORK = {
     ),
 }
 
-CSP_DEFAULT_SRC = ("'self'",)
+# CSP_DEFAULT_SRC = ("'self'",)
 
-CSP_CONNECT_SRC = ("'self'", "http://localhost:8000")
+# CSP_CONNECT_SRC = (
+#     "'self'",
+#     "http://localhost:8000",
+#     "http://127.0.0.1:8000",
+#     "http://localhost:8080", 
+#     "http://127.0.0.1:8080",
+
+# )
+
+
 
 
 SIMPLE_JWT = {
