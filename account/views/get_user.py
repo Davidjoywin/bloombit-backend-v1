@@ -2,11 +2,35 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 
 from ..models import UserProfile
 from ..permissions import IsAuthenticatiedUserOrReadOnlyd
 from ..serializers import UserProfileSerializer, UpdateUserSerializer
+
+class AuthenticatedUser(APIView):
+
+    def get(self, request):
+        req_user = request.user
+        if req_user.is_authenticated:
+            user = get_object_or_404(UserProfile, id=req_user.id)
+            serializer = UserProfileSerializer(user, many=False)
+            return Response(
+                {
+                    'status': True,
+                    'message': "Authenticated user retrieved successfully",
+                    'user': serializer.data,
+                    'statusCode': status.HTTP_200_OK
+                },
+                status=status.HTTP_200_OK
+            )
+        return Response(
+            {
+                'status': False,
+                'message': "Authenticated user retrieval failed",
+                'statusCode': status.HTTP_401_UNAUTHORIZED
+            },
+            status=status.HTTP_401_UNAUTHORIZED
+        )
 
 
 class GetUser(APIView):
