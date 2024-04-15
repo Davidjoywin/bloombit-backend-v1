@@ -1,12 +1,6 @@
 import time
 import pytz
 import datetime
-# from multiprocessing import Process
-from threading import Thread
-
-from django.contrib import admin
-from django.urls import path, include
-
 from consult.models import Consultation
 from utils.schedule import unbookProfessional
 
@@ -25,11 +19,3 @@ def background():
                 print("Time up")
                 unbookProfessional(consultation)
                 continue
-
-Thread(target=background).start()
-
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/account/', include('account.urls')),
-    path('api/consultation/', include('consult.urls')),
-]

@@ -3,8 +3,9 @@ from django.contrib.auth import login, authenticate
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer, ValidationError
 
-from .models import UserProfile, Professional
 from .utils import create_token
+from consult.models import Consultation
+from .models import UserProfile, Professional
 
 
 class UserProfileSerializer(ModelSerializer):
@@ -13,7 +14,7 @@ class UserProfileSerializer(ModelSerializer):
         fields = [
             "id",
             "username",
-            "password",
+            # "password",
             "email",
             "first_name",
             "last_name",
@@ -30,6 +31,33 @@ class UserProfileSerializer(ModelSerializer):
             professional.save()
         return account
     
+class KPISerializer:
+    users = serializers.IntegerField()
+    patients = serializers.IntegerField()
+    professionals = serializers.IntegerField()
+    active_users = serializers.IntegerField()
+    non_active_users = serializers.IntegerField()
+    total_consultations = serializers.IntegerField()
+    completed_consultations = serializers.IntegerField()
+    uncompleted_consultations = serializers.IntegerField()
+
+    def __init__(self):
+        self.set_data()
+
+    def set_data(self):
+        self.users = len(UserProfile.objects.all())
+        self.patients = len(UserProfile.objects.filter(account_type='patient'))
+        self.professionals = len(UserProfile.objects.filter(account_type='professional'))
+        self.active_users = len(UserProfile.objects.filter(is_active=True))
+        self.non_active_users = len(UserProfile.objects.filter(is_active=False))
+        self.total_consultations = len(Consultation.objects.all())
+        self.completed_consultations = len(Consultation.objects.filter(consult_done=True))
+        self.uncompleted_consultations = len(Consultation.objects.filter(consult_done=False))
+    
+    def data(self):
+        data = self.__dict__
+        return data
+
 class UpdateUserSerializer(ModelSerializer):
     class Meta:
         model = UserProfile
