@@ -7,8 +7,8 @@ class UserProfile(User):
         ("patient", "patient"),
         ("professional", "professional")
     ]
-    phone_no = models.CharField(max_length=15)
-    account_type = models.CharField(max_length=14, choices=types)
+    phone_no = models.CharField(max_length=15, null=True)
+    account_type = models.CharField(max_length=14, default='patient', choices=types)
 
     def __str__(self):
         return self.username
