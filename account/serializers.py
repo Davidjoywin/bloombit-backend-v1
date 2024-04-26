@@ -14,7 +14,7 @@ class UserProfileSerializer(ModelSerializer):
         fields = [
             "id",
             "username",
-            # "password",
+            "password",
             "email",
             "first_name",
             "last_name",
