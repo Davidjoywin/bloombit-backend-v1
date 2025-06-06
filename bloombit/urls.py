@@ -26,7 +26,10 @@ def background():
                 unbookProfessional(consultation)
                 continue
 
-Thread(target=background).start()
+try:
+    Thread(target=background).start()
+except Exception:
+    print("Table not Found")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
