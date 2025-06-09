@@ -3,7 +3,8 @@ from datetime import timedelta, datetime
 
 from django.db import models
 
-from account.models import UserProfile, Professional
+from account.models import UserProfile
+from specialist.models import MedicalSpecialist as Professional
 
 
 class Consultation(models.Model):

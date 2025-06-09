@@ -3,7 +3,8 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from ..models import UserProfile, Professional
+from ..models import UserProfile
+from specialist.models import MedicalSpecialist as Professional
 from ..serializers import ProfessionalSerializer
 from ..permissions import IsAuthenticatiedUserOrReadOnlyd
 

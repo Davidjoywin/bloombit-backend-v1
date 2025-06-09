@@ -5,7 +5,8 @@ from rest_framework.serializers import ModelSerializer, ValidationError
 
 from .utils import create_token
 from consult.models import Consultation
-from .models import UserProfile, Professional
+from .models import UserProfile
+from specialist.models import MedicalSpecialist as Professional
 
 
 class UserProfileSerializer(ModelSerializer):

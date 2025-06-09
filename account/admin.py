@@ -1,8 +1,8 @@
 from django.contrib import admin
 
-from .models import UserProfile, Professional, SecurityMode
+from .models import UserProfile, SecurityMode
 
 
 admin.site.register(UserProfile)
 admin.site.register(SecurityMode)
-admin.site.register(Professional)
+# admin.site.register(Professional)

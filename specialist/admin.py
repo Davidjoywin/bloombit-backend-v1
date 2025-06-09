@@ -4,10 +4,14 @@ from .models import (
     Specialization, 
     MedicalSpecialist, 
     AvailabilityTime, 
-    Education
+    Education,
+    Language,
+    LangLevel,
 )
 
-admin.site.register(Specialization)
-admin.site.register(MedicalSpecialist)
-admin.site.register(AvailabilityTime)
+admin.site.register(Language)
+admin.site.register(LangLevel)
 admin.site.register(Education)
+admin.site.register(Specialization)
+admin.site.register(AvailabilityTime)
+admin.site.register(MedicalSpecialist)

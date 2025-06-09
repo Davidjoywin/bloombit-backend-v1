@@ -30,22 +30,26 @@ class Language(models.Model):
     def __str__(self):
         return self.language
 
-class MedicalSpecialist(models.Model):
-    class LangLevel(models.Model):
-        lvl = [
-            ('beginner', "Beginner"),
-            ("fluent", "Fluent"),
-            ("expert", "Expert"),
-            ("native", "Native")
-        ]
-        medical_specialist = models.ForeignKey(to="MedicalSpecialist", on_delete=models.CASCADE)
-        language = models.ForeignKey(to=Language, on_delete=models.CASCADE)
-        level = models.CharField(choices=lvl, max_length=8)
+class LangLevel(models.Model):
+    lvl = [
+        ('beginner', "Beginner"),
+        ("fluent", "Fluent"),
+        ("expert", "Expert"),
+        ("native", "Native")
+    ]
+    medical_specialist = models.ForeignKey(to="MedicalSpecialist", on_delete=models.CASCADE)
+    language = models.ForeignKey(to=Language, on_delete=models.CASCADE)
+    level = models.CharField(choices=lvl, max_length=8)
+    
+    def __str__(self):
+        return self.language
 
+class MedicalSpecialist(models.Model):
+    prefix = models.CharField(default="Dr", max_length=5)
     name = models.CharField(max_length=25)
     education = models.OneToOneField(Education, on_delete=models.CASCADE)
     location = models.CharField(max_length=50)
-    years_experience = models.IntegerField(min=0)
+    years_experience = models.PositiveIntegerField()
     about = models.TextField()
     specialization = models.ForeignKey(to=Specialization, on_delete=models.CASCADE)
     date_joined = models.DateField(auto_now=True, auto_created=True)

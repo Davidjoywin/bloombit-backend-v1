@@ -4,8 +4,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.validators import ValidationError
 from rest_framework.serializers import ModelSerializer
 
-from .models import Professional, Consultation
-
+from .models import Consultation, Professional
 
 class ConsultationSerializer(ModelSerializer):
     class Meta:
