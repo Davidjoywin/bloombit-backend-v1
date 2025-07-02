@@ -35,4 +35,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/account/', include('account.urls')),
     path('api/consultation/', include('consult.urls')),
+    path('/api/medical-specialist/', include('specialist.urls'))
 ]

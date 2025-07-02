@@ -5,12 +5,10 @@ from .models import (
     MedicalSpecialist, 
     AvailabilityTime, 
     Education,
-    Language,
-    LangLevel,
+    Language
 )
 
 admin.site.register(Language)
-admin.site.register(LangLevel)
 admin.site.register(Education)
 admin.site.register(Specialization)
 admin.site.register(AvailabilityTime)

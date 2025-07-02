@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 
 class UserProfile(User):
     types = [
-        ("patient", "patient"),
-        ("professional", "professional")
+        ("patient", "Patient"),
+        ("professional", "Professional")
     ]
     phone_no = models.CharField(max_length=15, null=True)
     account_type = models.CharField(max_length=14, default='patient', choices=types)

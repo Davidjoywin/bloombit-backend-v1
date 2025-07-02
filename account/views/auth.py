@@ -19,7 +19,7 @@ class Auth(APIView):
             token = create_token(user)
             return Response(
                 {
-                    'status': True,
+                    'status': status.HTTP_200_OK,
                     'message': "Login successfully",
                     'user': user_serializer.data,
                     'token': token,
@@ -29,7 +29,7 @@ class Auth(APIView):
             )
         return Response(
             {
-                'status': False,
+                'status': status.HTTP_200_OK,
                 'message': "Login failed",
                 'statusCode': status.HTTP_400_BAD_REQUEST
             },

@@ -42,7 +42,7 @@ class GetUser(APIView):
     def get(self, request, id):
         user = self.get_object(pk=id)
         self.check_object_permissions(request, user)
-        serializer = UserProfileSerializer(user, context={"request": request})
+        serializer = UserProfileSerializer(user, many=False)
         return Response(
             {
                 'status': True,
