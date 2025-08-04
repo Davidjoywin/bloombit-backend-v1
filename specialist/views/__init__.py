@@ -1,2 +1,5 @@
 from .category import Category, GetCategories
-from .medical_specialist import MedicalSpecialistView, CreateMedicalSpecialist, AllMedicalSpecialistView
+from .medical_specialist import (
+    MedicalSpecialistView, MedicalSpecialistByCategoryView,
+    CreateMedicalSpecialist, AllMedicalSpecialistView
+)

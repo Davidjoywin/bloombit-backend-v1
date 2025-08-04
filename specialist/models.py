@@ -1,10 +1,25 @@
 from django.db import models
+from uuid import uuid4
 
 class Specialization(models.Model):
-    name = models.CharField(max_length=30, primary_key=True, unique=True)
-    slug = models.SlugField(max_length=30)
-    images = models.ImageField(verbose_name="specialization image", 
-                               upload_to="Images/specialization_img")
+    icon_choices = [
+        ("heart", "Heart"),
+        ("brain", "Brain"),
+        ("baby", "Baby"),
+        ("bone", "Bone"),
+        ("scan", "Scan"),
+        ("brain_circuit", "BrainCircuit"),
+        ("eye", "Eye"),
+        ("stethoscope", "Stethoscope"),
+        ("lungs", "Lungs"),
+        ("flask", "Flask"),
+        ("microscope", "Microscope"),
+        ("laptop", "Laptop"),
+    ]
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    name = models.CharField(max_length=30, unique=True)
+    icon = models.CharField(max_length=15, choices=icon_choices)
+    slugged_name = models.SlugField(max_length=30)
     description = models.TextField()
     
     def __str__(self):

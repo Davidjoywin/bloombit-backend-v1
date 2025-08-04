@@ -1,0 +1,39 @@
+Specialist-Registration:
+	Personal Information
+	- firtname
+	- lastname
+	- emai
+	- phone no
+	- DOB
+	- Gender
+	- Address - TextBox
+	- City
+	- state/province
+	- postal code
+	- country - dropdown
+
+	Professional Details
+	- primary specialization
+	- Secondary Specialization (Optional)
+	- Highest Medical Qualification
+	- Medical License Number
+	- Years of Experience
+	- current Practice/Hospital
+	- Professional Bio
+	- service offered: In-person Consultation, surgery, emergency care, telemedicine, follow up care, preventive care
+	- Availability for appointments: weekdays, weekends
+	- Average Appointment Duration(mins)
+
+	Verification
+	verification Documents
+	- Profile Photo
+	- Government-issued ID (image)
+	- Medical License (image)
+	- medical degree cert (image)
+	- Additional Certificates (image)(optional)
+	 
+
+	Agreement
+	- T/C agreement (boolean)
+	- Consent to process personal and professional data (boolean)
+	- i confirm information (boolean)

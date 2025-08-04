@@ -9,20 +9,21 @@ from ..serializers import SpecializationSerializer
 
 
 class GetCategories(APIView):
-    def get(self):
+    def get(self, request):
         specialization = Specialization.objects.all()
         serializer = SpecializationSerializer(specialization, many=True)
+        print(serializer.data)
         return Response({
                 "status": True,
                 "message": "Retrived medical Specialization Successfully",
                 "data": serializer.data,
                 "statusCode": status.HTTP_200_OK
-            }, status=True
+            }, status=status.HTTP_200_OK
         )
     
 class Category(APIView):
-    def get(self, request, slug):
-        specialization = get_object_or_404(Specialization, slug=slug)
+    def get(self, request, slugged_name):
+        specialization = get_object_or_404(Specialization, slugged_name=slugged_name)
         serializer = SpecializationSerializer(specialization, many=False)
 
         return Response({

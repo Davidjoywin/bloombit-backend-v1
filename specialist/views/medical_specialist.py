@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from ..models import MedicalSpecialist
+from ..models import MedicalSpecialist, Specialization
 from ..serializers import MedicalSpecialistSerializer
 
 
@@ -60,6 +60,18 @@ class MedicalSpecialistView(APIView):
         medical_specialist = get_object_or_404(MedicalSpecialist, id=id)
         medical_specialist.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class MedicalSpecialistByCategoryView(APIView):
+    def get(self, request, slugged_name):
+        specialization = get_object_or_404(Specialization, slugged_name=slugged_name)
+        medical_specialists = MedicalSpecialist.objects.filter(specialization=specialization)
+        serializer = MedicalSpecialistSerializer(medical_specialists, many=True)
+        return Response({
+            "status": True,
+            "message": "success",
+            "data": serializer.data,
+            "statusCode": status.HTTP_200_OK
+        }, status=status.HTTP_200_OK)
     
 class AllMedicalSpecialistView(APIView):
     def get(self, request, id):
