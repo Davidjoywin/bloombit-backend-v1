@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
+    'drf_spectacular',
     'rest_framework',
     'rest_framework_simplejwt',
     'account',
@@ -120,6 +121,25 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# DRF Spectacular Settings
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Bloombit API docs',
+    'DESCRIPTION': 'A comprehensive api documentation for api',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SERVERS': [
+        {'url': 'http://127.0.0.1:8000', 'description': 'Local development server'},
+        {'url': 'https://', 'description': 'Production server'},
+    ],
+    'SWAGGER_UI_SETTINGS': {
+        'persistAuthorization': True,
+        'filter': True,
+        'operationsSorter': 'alpha',
+    },
+    'COMPONENT_SPLIT_REQUEST': True,
+}
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
@@ -133,7 +153,8 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.JSONParser',
         'rest_framework.parsers.FormParser',
         'rest_framework.parsers.MultiPartParser'
-    ]
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 # CSP_DEFAULT_SRC = ("'self'",)

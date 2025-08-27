@@ -22,6 +22,9 @@ class UserProfileSerializer(ModelSerializer):
             "phone_no",
             "account_type"
         ]
+        extra_kwargs = {
+            'password': {'write_only': True},
+        }
     
     def create(self, validated_data):
         account = UserProfile.objects.create(**validated_data)
@@ -86,15 +89,17 @@ class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=15)
     password = serializers.CharField(max_length=25)
 
-    def validate(self, data):
-        try:
-            user = UserProfile.objects.get(username=data['username'])
-        except Exception:
-            raise ValidationError({'user': "User not found"})
-        if not user.check_password(data['password']):
-            raise ValidationError({"password": "Incorrect password"})
-        login(self.context['request'], user)
-        return data
+    # def validate(self, data):
+        # print(self.context)
+        # try:
+        #     user = UserProfile.objects.get(username=data['username'])
+        #     print(user)
+        #     if not user.check_password(data['password']):
+        #         raise ValidationError({"password": "Incorrect password"})
+        #     login(self.context['request'], user)
+        #     return data
+        # except Exception:
+        #     raise ValidationError({'user': "User not found"})
     
 class ProfessionalSerializer(serializers.ModelSerializer):
     class Meta:

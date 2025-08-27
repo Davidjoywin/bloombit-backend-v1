@@ -1,3 +1,4 @@
+import json
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.viewsets import ViewSet
@@ -8,9 +9,22 @@ from ..serializers import RegisterSpecialistSerializer
 
 
 class RegisterSpecialist(APIView):
+
+    serializer_class = RegisterSpecialistSerializer
+    parser_classes = (MultiPartParser, FormParser)
     
     def post(self, request):
-        serializer = RegisterSpecialistSerializer(data=request.data)
+        personal_information = json.loads(request.data.get("personal_information", {}))
+        professional_details = json.loads(request.data.get("professional_details", {}))
+        verification_documents = json.loads(request.data.get("verification_documents", {}))
+        agreements = json.loads(request.data.get("agreements", {}))
+        verification_documents['profile_photo'] = request.data.get("profile_photo")
+        verification_documents["government_issued_id"] = request.data.get("government_issued_id")
+        verification_documents["medical_license"] = request.data.get("medical_license")
+        verification_documents["medical_degree_certificate"] = request.data.get("medical_degree_certificate")
+        verification_documents["additional_certificate"] = request.data.get("additional_certificate")
+        new_data = {**personal_information, **professional_details, **verification_documents, **agreements}
+        serializer = RegisterSpecialistSerializer(data=new_data)
         if serializer.is_valid():
             return Response({
                     "status": True,

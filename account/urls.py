@@ -10,7 +10,7 @@ urlpatterns = [
     path('auth', Auth.as_view(), name='login'),
     path('<int:id>', GetUser.as_view(), name='get-user'),
     path('user', AuthenticatedUser.as_view(), name='auth-user'),
-    path('<int:id>/professional', GetProfessional.as_view(),  name='update-professional'),
+    path('specialist/<int:id>', GetProfessional.as_view(),  name='update-professional'),
     path('kpi', KPI.as_view(), name='KPI'),
 
     # specialist account 

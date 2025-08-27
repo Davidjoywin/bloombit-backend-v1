@@ -6,6 +6,7 @@ from threading import Thread
 
 from django.contrib import admin
 from django.urls import path, include
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
 from consult.models import Consultation
 from utils.schedule import unbookProfessional
@@ -34,6 +35,11 @@ from utils.schedule import unbookProfessional
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/account/', include('account.urls')),
+    path('api/patient/', include('patient.urls')),
     path('api/consultation/', include('consult.urls')),
-    path('api/medical-specialist/', include('specialist.urls'))
+    path('api/medical-specialist/', include('specialist.urls')),
+    
+    # OpenAPI Schema: This serves the schema as a JSON file
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
 ]

@@ -9,6 +9,8 @@ from ..serializers import UserProfileSerializer, UpdateUserSerializer
 
 class AuthenticatedUser(APIView):
 
+    serializer_class = UserProfileSerializer
+
     def get(self, request):
         req_user = request.user
         if req_user.is_authenticated:
@@ -34,7 +36,10 @@ class AuthenticatedUser(APIView):
 
 
 class GetUser(APIView):
+
     permission_classes = [IsAuthenticatiedUserOrReadOnlyd]
+    serializer_class = UserProfileSerializer
+
     def get_object(self, pk):
         obj = get_object_or_404(UserProfile, pk=pk)
         return obj

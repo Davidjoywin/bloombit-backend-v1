@@ -10,16 +10,17 @@ from specialist.models import MedicalSpecialist as Professional
 class Consultation(models.Model):
     patient = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     professional_assigned = models.ForeignKey(Professional, on_delete=models.CASCADE, related_name="professional_assigned", blank=True, null=True)
-    duration = models.IntegerField()
+    duration = models.IntegerField(blank=True, null=True)  # in minutes
     start_time = models.DateTimeField(auto_created=True, auto_now=True)
     end_time = models.DateTimeField(blank=True, null=True)
-    recommended_treatment = models.TextField()
-    health_condition_summary = models.CharField(max_length=50)
+    recommended_treatment = models.TextField(blank=True, null=True)
+    health_condition_summary = models.CharField(max_length=50, blank=True, null=True)
     professional_of_choice = models.ForeignKey(Professional, on_delete=models.CASCADE, related_name='patient_professional_choice', blank=True, null=True)
     consult_done = models.BooleanField(default=False)
-    call_link = models.CharField(max_length=25)
-    prescription = models.CharField(max_length=35)
-    
+    call_link = models.CharField(max_length=25, blank=True, null=True)
+    prescription = models.CharField(max_length=35, blank=True, null=True)
+    notes = models.TextField(blank=True, null=True)
+
     def __str__(self):
         return self.patient.username
     

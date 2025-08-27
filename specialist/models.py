@@ -33,8 +33,8 @@ class AvailabilityTime(models.Model):
         return f"Available Time: {self.hour_daily}:00"
     
 class Education(models.Model):
-    school_name = models.CharField(max_length=25)
-    major = models.CharField(max_length=15)
+    school_name = models.CharField(max_length=50)
+    major = models.CharField(max_length=20)
     start_year = models.DateField()
     end_year = models.DateField()
 

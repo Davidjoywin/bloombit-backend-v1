@@ -9,8 +9,10 @@ from ..serializers import MedicalSpecialistSerializer
 
 
 class CreateMedicalSpecialist(APIView):
+    serializer_class = MedicalSpecialistSerializer
+
     def post(self, request):
-        serializer = MedicalSpecialistSerializer(data=request.data, context={"request": request})
+        serializer = self.serializer_class(data=request.data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
             return Response({
@@ -28,9 +30,10 @@ class CreateMedicalSpecialist(APIView):
     
 
 class MedicalSpecialistView(APIView):
+
     def get(self, request, id):
         medical_specialist = get_object_or_404(MedicalSpecialist, id=id)
-        serializer = MedicalSpecialistSerializer(medical_specialist, many=False)
+        serializer = self.serializer_class(medical_specialist, many=False)
         return Response({
             "status": True,
             "message": "success",
@@ -62,10 +65,12 @@ class MedicalSpecialistView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class MedicalSpecialistByCategoryView(APIView):
+    serializer_class = MedicalSpecialistSerializer
+
     def get(self, request, slugged_name):
         specialization = get_object_or_404(Specialization, slugged_name=slugged_name)
         medical_specialists = MedicalSpecialist.objects.filter(specialization=specialization)
-        serializer = MedicalSpecialistSerializer(medical_specialists, many=True)
+        serializer = self.serializer_class(medical_specialists, many=True)
         return Response({
             "status": True,
             "message": "success",
@@ -74,9 +79,11 @@ class MedicalSpecialistByCategoryView(APIView):
         }, status=status.HTTP_200_OK)
     
 class AllMedicalSpecialistView(APIView):
+    serializer_class = MedicalSpecialistSerializer
+
     def get(self, request, id):
         medical_specialists = MedicalSpecialist.objects.all()
-        serializer = MedicalSpecialistSerializer(medical_specialists, many=True)
+        serializer = self.serializer_class(medical_specialists, many=True)
         return Response({
             "status": True,
             "message": "success",

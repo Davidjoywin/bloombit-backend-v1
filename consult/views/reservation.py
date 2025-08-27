@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from drf_spectacular.utils import extend_schema
 
 from ..models import Consultation
 from account.models import UserProfile
@@ -31,6 +32,9 @@ class Reservation(APIView):
             status=status.HTTP_200_OK
         )
     
+    @extend_schema(
+        request=ConsultationSerializer
+    )
     def put(self, request, id):
         reservation = self.get_object(id)
         self.check_object_permissions(request, reservation)

@@ -11,6 +11,7 @@ from ..serializers import UserProfileSerializer
 class CreateUser(APIView):
 
     permission_classes = [AllowAny]
+    serializer_class = UserProfileSerializer
     
     def post(self, request):
         serializer = UserProfileSerializer(data=request.data, context={'request': request})
