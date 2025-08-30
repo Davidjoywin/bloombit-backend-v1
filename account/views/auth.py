@@ -55,7 +55,7 @@ class Auth(APIView):
                         'message': "Login Failed",
                         'error': {'username': ['User not found']},
                         'statusCode': status.HTTP_400_BAD_REQUEST
-                    }
+                    }, status=status.HTTP_400_BAD_REQUEST
                 )
         return Response(
             {
