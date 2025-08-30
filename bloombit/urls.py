@@ -36,9 +36,13 @@ from utils.schedule import unbookProfessional
 def home(request):
     return redirect("/api/docs/")
 
+def admin(request):
+    return redirect("/api/docs/")
+
 urlpatterns = [
     path('', home, name="home"),
-    path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),
+    path('admin/', admin, name="admin"),
     path('api/account/', include('account.urls')),
     path('api/patient/', include('patient.urls')),
     path('api/consultation/', include('consult.urls')),
