@@ -5,8 +5,9 @@ import datetime
 from threading import Thread
 
 from django.contrib import admin
+from django.shortcuts import redirect
 from django.urls import path, include
-from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 from consult.models import Consultation
 from utils.schedule import unbookProfessional
@@ -32,7 +33,11 @@ from utils.schedule import unbookProfessional
 # except Exception:
 #     print("Table not Found")
 
+def home(request):
+    return redirect("/api/docs/")
+
 urlpatterns = [
+    path('', home, name="home"),
     path('admin/', admin.site.urls),
     path('api/account/', include('account.urls')),
     path('api/patient/', include('patient.urls')),

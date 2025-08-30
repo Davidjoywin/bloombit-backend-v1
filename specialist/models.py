@@ -16,14 +16,16 @@ class Specialization(models.Model):
         ("microscope", "Microscope"),
         ("laptop", "Laptop"),
     ]
-    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     name = models.CharField(max_length=30, unique=True)
+    slugged_name = models.SlugField(max_length=30, unique=True)
     icon = models.CharField(max_length=15, choices=icon_choices)
-    slugged_name = models.SlugField(max_length=30)
     description = models.TextField()
     
     def __str__(self):
         return self.name
+    
+    def sluggify(self):
+        return '-'.join(self.name.lower().split(' '))
     
 class AvailabilityTime(models.Model):
     hour_daily = models.DateTimeField()

@@ -5,7 +5,9 @@ from .models import Specialization, Education, MedicalSpecialist
 
 
 class SpecializationSerializer(ModelSerializer):
+    # slug = '-'.join(validated_data.get('name', '').lower().split(' '))
     count = serializers.IntegerField(source='medicalspecialist_set.count', read_only=True)
+    slugged_name = serializers.SlugField(source='sluggify', read_only=True)
 
     class Meta:
         model = Specialization
@@ -13,10 +15,8 @@ class SpecializationSerializer(ModelSerializer):
         read_only_fields = ["slugged_name", "count"]
     
     def create(self, validated_data):
-        name = validated_data.name.lower().split('')
-        slug = '-'.join(name)
-        validated_data.slugged_name = slug
-        specialization = Specialization.object.create(**validated_data)
+        specialization = Specialization.objects.create(**validated_data)
+        specialization.save()
         return specialization
 
 class EducationSerializer(ModelSerializer):

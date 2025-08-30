@@ -69,6 +69,9 @@ class ClinicalNote(models.Model):
 
 
 class Allergy(models.Model):
+    class Meta:
+        verbose_name = "Allergie"
+
     name = models.CharField(max_length=50)
     description = models.TextField(blank=True, null=True)
     reactions = models.TextField()
