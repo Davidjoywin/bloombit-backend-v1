@@ -130,7 +130,7 @@ SPECTACULAR_SETTINGS = {
     'SERVE_INCLUDE_SCHEMA': False,
     'SERVERS': [
         {'url': 'http://127.0.0.1:8000', 'description': 'Local development server'},
-    #     {'url': 'https://davidjoy.pythonanywhere.com', 'description': 'Production server'},
+        {'url': 'https://davidjoy.pythonanywhere.com', 'description': 'Production server'},
     ],
     'SWAGGER_UI_SETTINGS': {
         'persistAuthorization': True,
