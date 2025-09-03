@@ -1,11 +1,11 @@
 from django.contrib import admin
 
 from .models import (
-    UserProfile, SecurityMode, RegisterSpecialist
+    UserProfile, SecurityMode
 )
 
 
 admin.site.register(UserProfile)
 admin.site.register(SecurityMode)
 
-admin.site.register(RegisterSpecialist)
+# admin.site.register(MedicalSpecialist)

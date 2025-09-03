@@ -13,7 +13,7 @@ class UserProfile(User):
     
     def __str__(self):
         return self.username
-
+    
 class SecurityMode(models.Model):
     user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
     login_alert = models.BooleanField(default=True)
@@ -64,7 +64,15 @@ class SpecialistPersonalInformations(models.Model):
 #     weekday = models.CharField(choices=time_available, max_length=15)
 #     weekend = models.CharField(choices=time_available, max_length=15)
 
-class _SpecialistProfessionalDetails(models.Model):
+time_availability = {
+    "morning": [i for i in range(7, 13)], # time: 7,8,9,10,11,12
+    "afternoon": [i for i in range(12, 18)], # time: 13,14,15,16,17 
+    "evening": [i for i in range(17, 23)], # time: 18,19,20,21,22,
+    "full-day": [i for i in range(7, 23)], # time: 7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22
+    "not-available": []
+}
+
+class SpecialistProfessionalDetails(models.Model):
     class Meta:
         abstract = True
 
@@ -94,29 +102,29 @@ class _SpecialistProfessionalDetails(models.Model):
     follow_up_care = models.BooleanField(default=False)
     preventive_care = models.BooleanField(default=False)
     # appointment_availability = models.OneToOneField(AppointmentAvailability, on_delete=models.CASCADE);
-    weekday_available = models.CharField(choices=time_available, max_length=15)
-    weekend_available = models.CharField(choices=time_available, max_length=15)
+    weekday_availability = models.CharField(choices=time_available, max_length=15)
+    weekend_availability = models.CharField(choices=time_available, max_length=15)
     average_appointment_duration = models.IntegerField(choices=duration_choices)
 
     def __str__(self):
         return "Specialist Professional Details"
     
 
-class _SpecialistVerificationDocuments(models.Model):
+class SpecialistVerificationDocuments(models.Model):
     class Meta:
         abstract = True
 
-    profile_photo = models.ImageField(upload_to="./specialist/account", blank=False, null=False)
-    government_issued_id = models.ImageField(upload_to="./specialist/account", blank=False, null=False)
-    medical_license = models.ImageField(upload_to="./specialist/account", blank=False, null=False)
-    medical_degree_certificate = models.ImageField(upload_to="./specialist/account", blank=False, null=False)
-    additional_certificate = models.ImageField(upload_to="./specialist/account", blank=False, null=False)
+    profile_photo = models.ImageField(upload_to="./specialist/img", blank=False, null=False)
+    government_issued_id = models.ImageField(upload_to="./specialist/img", blank=False, null=False)
+    medical_license = models.ImageField(upload_to="./specialist/img", blank=False, null=False)
+    medical_degree_certificate = models.ImageField(upload_to="./specialist/img", blank=False, null=False)
+    additional_certificate = models.ImageField(upload_to="./specialist/img", blank=False, null=False)
 
     def __str__(self):
         return "Specialist Verification Documents"
 
     
-class _SpecialistAgreements(models.Model):
+class SpecialistAgreements(models.Model):
     class Meta:
         abstract = True
 
@@ -126,26 +134,4 @@ class _SpecialistAgreements(models.Model):
 
     def __str__(self):
         return "Specialist Agreements"
-
-class RegisterSpecialist(
-    SpecialistPersonalInformations, _SpecialistProfessionalDetails,
-    _SpecialistVerificationDocuments, _SpecialistAgreements
-):
-    id = models.UUIDField(primary_key=True, default=uuid4, auto_created=True, blank=True)
-    # personal_information = models.OneToOneField(SpecialistPersonalInformations, on_delete=models.CASCADE)
-    # professional_details = models.OneToOneField(SpecialistProfessionalDetails, on_delete=models.CASCADE)
-    # verification_documents = models.OneToOneField(SpecialistVerificationDocuments, on_delete=models.CASCADE)
-    # agreements = models.OneToOneField(SpecialistAgreements, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"Specialist: {self.firstname} {self.lastname}"
-
     
-# class Professional(models.Model):
-#     user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
-#     field = models.CharField(max_length=25)
-#     summary = models.CharField(max_length=50)
-#     booked = models.BooleanField(default=False)
-
-#     def __str__(self):
-#         return f"{self.user.get_full_name() or self.user.username} => {self.field}"

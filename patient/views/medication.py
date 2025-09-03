@@ -5,11 +5,11 @@ from rest_framework.parsers import JSONParser
 from drf_spectacular.utils import extend_schema
 
 from ..models import Medication
-from ..serializers import PatientSerializer
+from ..serializers import MedicationSerializer
 
 
 class CreateMedicationView(APIView):
-    serializer_class = PatientSerializer
+    serializer_class = MedicationSerializer
     parser_classes = [JSONParser]
 
     @extend_schema(
@@ -33,7 +33,7 @@ class CreateMedicationView(APIView):
         }, status=status.HTTP_400_BAD_REQUEST)
     
 class GetMedicationView(APIView):
-    serializer_class = PatientSerializer
+    serializer_class = MedicationSerializer
     parser_classes = [JSONParser]
 
     def get(self, request, id):
@@ -82,8 +82,27 @@ class GetMedicationView(APIView):
             'statusCode': status.HTTP_400_BAD_REQUEST
         }, status=status.HTTP_400_BAD_REQUEST)
     
+class GetPatientMedications(APIView):
+    serializer_class = MedicationSerializer
+
+    def get(self, request, patient_id):
+        try:
+            medication = Medication.objects.get(patient_id=patient_id)
+        except:
+            return Response({
+                'status': False,
+                'message': "No medication for patient was found"
+            }, status=status.HTTP_404_NOT_FOUND)
+        serializer = self.serializer_class(medication, many=True)
+        return Response({
+            'status': True,
+            'message': "Retrieved medications for patient successfully",
+            'data': serializer.data,
+            'statusCode': status.HTTP_200_OK
+        }, status=status.HTTP_200_OK)
+    
 class ListMedicationsView(APIView):
-    serializer_class = PatientSerializer
+    serializer_class = MedicationSerializer
 
     def get(self, request):
         medications = Medication.objects.all()

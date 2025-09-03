@@ -17,7 +17,7 @@ class MakeReservation(APIView):
         request=MakeReservationSerializer
     )
     def post(self, request):
-        serializer = MakeReservationSerializer(data=request.data, context={'request': request})
+        serializer = self.serializer_class(data=request.data, context={'request': request})
 
         if serializer.is_valid():
             serializer.save()

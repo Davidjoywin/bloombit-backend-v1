@@ -1,9 +1,10 @@
+import json
 from django.shortcuts import get_object_or_404
 
-from rest_framework import status
+from rest_framework import status, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.parsers import JSONParser
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from drf_spectacular.utils import extend_schema
 
 from ..models import MedicalSpecialist, Specialization
@@ -11,34 +12,36 @@ from ..serializers import MedicalSpecialistSerializer
 
 
 class CreateMedicalSpecialist(APIView):
-    parser_classes = [JSONParser]
-    serializer_class = MedicalSpecialistSerializer
 
-    @extend_schema(
-        request=serializer_class,
-        description="Create a new medical specialist",
-        summary="Create Medical Specialist"
-    )
+    serializer_class = MedicalSpecialistSerializer
+    parser_classes = (MultiPartParser, FormParser)
+    
     def post(self, request):
-        serializer = self.serializer_class(data=request.data, context={"request": request})
+        request_data = request.data
+        validated_data = {key: value for key, value in request_data.items()}
+        validated_data['languages'] = json.loads(request_data.get('languages', '[]'))
+        validated_data['educations'] = json.loads(request_data.get('educations', '[]'))
+
+        serializer = MedicalSpecialistSerializer(data=validated_data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
             return Response({
-                'status': True,
-                'message': "success",
-                'data': serializer.data,
-                'statusCode': status.HTTP_201_CREATED
-            }, status=status.HTTP_201_CREATED)
+                    "status": True,
+                    "data": serializer.data,
+                    "statusCode": status.HTTP_200_OK,
+                    "message": "Specialist Created Successfully"
+            }, status=status.HTTP_200_OK)
         return Response({
-            'status': False,
-            'message': "failed",
-            'error': serializer.errors,
-            'statusCode': status.HTTP_400_BAD_REQUEST
+            "status": False,
+            "error": serializer.errors,
+            "statusCode": status.HTTP_400_BAD_REQUEST,
+            "message": "Failed to create a specialist"
         }, status=status.HTTP_400_BAD_REQUEST)
-    
+
 
 class MedicalSpecialistView(APIView):
 
+    parser_classes = [MultiPartParser, FormParser]
     serializer_class = MedicalSpecialistSerializer
 
     @extend_schema(
@@ -62,7 +65,13 @@ class MedicalSpecialistView(APIView):
     )
     def put(self, request, id):
         medical_specialist = get_object_or_404(MedicalSpecialist, id=id)
-        serializer = MedicalSpecialistSerializer(medical_specialist, data=request.data, context={"request": request})
+        request_data = request.data
+        validated_data = {key: value for key, value in request_data.items()}
+        print("hllo eoere")
+        validated_data['languages'] = json.loads(request_data.get('languages', ''))
+        validated_data['educations'] = json.loads(request_data.get('educations', '[]'))
+        # print(validated_data)
+        serializer = MedicalSpecialistSerializer(medical_specialist, data=validated_data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
             return Response({
@@ -112,7 +121,7 @@ class AllMedicalSpecialistView(APIView):
         description="Retrieve all medical specialists",
         summary="Retrieve All Medical Specialists"
     )
-    def get(self, request, id):
+    def get(self, request):
         medical_specialists = MedicalSpecialist.objects.all()
         serializer = self.serializer_class(medical_specialists, many=True)
         return Response({

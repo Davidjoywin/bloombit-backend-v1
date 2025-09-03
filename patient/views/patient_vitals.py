@@ -7,7 +7,7 @@ from drf_spectacular.utils import extend_schema
 from django.shortcuts import get_object_or_404
 
 from ..serializers import VitalSerializer
-from ..models import Patient, Vital
+from ..models import Patient, Vital, UserProfile
 
 
 class CreatePatientVitals(APIView):
@@ -40,8 +40,9 @@ class AuthPatientVitals(APIView):
     serializer_class = VitalSerializer
 
     def get(self, request):
-        auth_user_id = request.user.id
-        patient = get_object_or_404(Patient, id=auth_user_id)
+        auth_user = request.user
+        user_profile = UserProfile.objects.get(username=auth_user.username)
+        patient = get_object_or_404(Patient, user=user_profile)
         vitals = patient.vital_set.all()
         serializer = VitalSerializer(vitals, many=True)
         return Response({

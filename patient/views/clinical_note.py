@@ -82,6 +82,26 @@ class GetClinicalNoteView(APIView):
             'statusCode': status.HTTP_400_BAD_REQUEST
         }, status=status.HTTP_400_BAD_REQUEST)
     
+class GetPatientClinicalNotes(APIView):
+    serializer_class = ClinicalNoteSerializer
+
+    def get(self, request, patient_id):
+        try:
+            clinical_note = ClinicalNote.objects.get(patient_id=patient_id)
+        except:
+            return Response({
+                'status': False,
+                'message': "No Clinal Note was found",
+                'statusCode': status.HTTP_404_NOT_FOUND
+            }, status=status.HTTP_404_NOT_FOUND)
+        serializer = self.serializer_class(clinical_note, many=True)
+        return Response({
+            'status': True,
+            'message': "Retrieved Clinical notes for patient successfully",
+            'data': serializer.data,
+            'statusCode': status.HTTP_200_OK
+        }, status=status.HTTP_200_OK)
+    
 class ListClinicalNotesView(APIView):
     serializer_class = ClinicalNoteSerializer
 

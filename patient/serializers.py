@@ -1,3 +1,4 @@
+from rest_framework import validators
 from rest_framework.serializers import ModelSerializer
 from django.shortcuts import get_object_or_404
 
@@ -12,12 +13,21 @@ class PatientSerializer(ModelSerializer):
             'user': {'read_only': True},
         }
 
-    def create(self, validated_data):
-        auth_user_id = self.context['request'].user.id
-        user_profile = get_object_or_404(UserProfile, id=auth_user_id)
-        validated_data['user'] = user_profile
+    def validate(self, attrs):
+        request = self.context['request']
+        user_profile = UserProfile.objects.get(username=request.user.username)
+        if user_profile.account_type != 'patient':
+            raise validators.ValidationError({"user": "User not a Patient"})
+        if Patient.objects.filter(user=user_profile).exists() and request.method == 'POST':
+            raise validators.ValidationError({"User": "User already has a patient profile"})
+        return attrs
 
-        patient = Patient.objects.create(**validated_data)
+    def create(self, validated_data):
+        auth_user = self.context['request'].user
+        user_profile = get_object_or_404(UserProfile, username=auth_user.username)
+        # validated_data['user'] = user_profile
+
+        patient = Patient.objects.create(user=user_profile, **validated_data)
         patient.save()
         return patient
 
@@ -31,7 +41,7 @@ class VitalSerializer(ModelSerializer):
         vital = Vital.objects.create(**validated_data)
         vital.save()
         return vital
-    
+
 class AllergySerializer(ModelSerializer):
     class Meta:
         model = Allergy

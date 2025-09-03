@@ -5,11 +5,11 @@ from rest_framework.parsers import JSONParser
 from drf_spectacular.utils import extend_schema
 
 from ..models import MedicalCondition
-from ..serializers import PatientSerializer
+from ..serializers import MedicalConditionSerializer
 
 
 class CreateMedicalConditionView(APIView):
-    serializer_class = PatientSerializer
+    serializer_class = MedicalConditionSerializer
     parser_classes = [JSONParser]
 
     @extend_schema(
@@ -33,7 +33,7 @@ class CreateMedicalConditionView(APIView):
         }, status=status.HTTP_400_BAD_REQUEST)
     
 class GetMedicalConditionView(APIView):
-    serializer_class = PatientSerializer
+    serializer_class = MedicalConditionSerializer
     parser_classes = [JSONParser]
 
     def get(self, request, id):
@@ -82,8 +82,28 @@ class GetMedicalConditionView(APIView):
             'statusCode': status.HTTP_400_BAD_REQUEST
         }, status=status.HTTP_400_BAD_REQUEST)
     
+class GetPatientMedicalConditions(APIView):
+    serializer_class = MedicalConditionSerializer
+
+    def get(self, request, patient_id):
+        try:
+            clinical_note = MedicalCondition.objects.get(patient_id=patient_id)
+        except:
+            return Response({
+                'status': False,
+                'message': "No medical condition was found",
+                'statusCode': status.HTTP_404_NOT_FOUND
+            }, status=status.HTTP_404_NOT_FOUND)
+        serializer = self.serializer_class(clinical_note, many=True)
+        return Response({
+            'status': True,
+            'message': "Retrieved medical conditions for patient successfully",
+            'data': serializer.data,
+            'statusCode': status.HTTP_200_OK
+        }, status=status.HTTP_200_OK)
+    
 class ListMedicalConditionsView(APIView):
-    serializer_class = PatientSerializer
+    serializer_class = MedicalConditionSerializer
 
     def get(self, request):
         medical_conditions = MedicalCondition.objects.all()

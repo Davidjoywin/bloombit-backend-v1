@@ -86,6 +86,27 @@ class GetAllergyView(APIView):
             'statusCode': status.HTTP_400_BAD_REQUEST
         }, status=status.HTTP_400_BAD_REQUEST)
     
+class GetPatientAllergies(APIView):
+    serializer_class = AllergySerializer
+
+    def get(self, request, patient_id):
+        try:
+            patient_allergy = Allergy.objects.filter(patient_id=patient_id)
+            serializer = self.serializer_class(patient_allergy, many=True)
+            return Response({
+                'status': True,
+                'message': "Successfully retrieved all patient allergy",
+                'data': serializer.data,
+                'statusCode': status.HTTP_200_OK
+            }, status=status.HTTP_200_OK)
+        except:
+            return Response({
+                'status': False,
+                'message': "Allergy not found for patient",
+                'statusCode': status.HTTP_404_NOT_FOUND
+            }, status=status.HTTP_404_NOT_FOUND)
+
+
 class ListAllergiesView(APIView):
     serializer_class = AllergySerializer
 

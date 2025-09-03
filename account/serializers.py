@@ -1,12 +1,12 @@
 # from django.shortcuts import get_object_or_404
 # from django.contrib.auth import login, authenticate
-# from rest_framework import serializers
-# from rest_framework.serializers import ModelSerializer, ValidationError
+from rest_framework import serializers
+from rest_framework.serializers import ModelSerializer, ValidationError
 
 # from .utils import create_token
 # from consult.models import Consultation
 # from .models import UserProfile
-# from specialist.models import MedicalSpecialist as Professional
+from specialist.models import MedicalSpecialist # as Professional
 
 
 # class UserProfileSerializer(ModelSerializer):
@@ -31,6 +31,7 @@
 #             professional = Professional.objects.create(user=account)
 #             professional.save()
 #         return account
+    
     
 # class KPISerializer:
 #     users = serializers.IntegerField()

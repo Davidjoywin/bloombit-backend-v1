@@ -8,7 +8,7 @@ from ..permissions import IsAuthenticatiedUserOrReadOnlyd
 from ..serializers import UserProfileSerializer, UpdateUserSerializer
 
 class AuthenticatedUser(APIView):
-
+    
     serializer_class = UserProfileSerializer
 
     def get(self, request):

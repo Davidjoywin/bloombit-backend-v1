@@ -5,11 +5,11 @@ from rest_framework.parsers import JSONParser
 from drf_spectacular.utils import extend_schema
 
 from ..models import LabResult
-from ..serializers import PatientSerializer
+from ..serializers import LabResultSerializer
 
 
 class CreateLabResultView(APIView):
-    serializer_class = PatientSerializer
+    serializer_class = LabResultSerializer
     parser_classes = [JSONParser]
 
     @extend_schema(
@@ -33,7 +33,7 @@ class CreateLabResultView(APIView):
         }, status=status.HTTP_400_BAD_REQUEST)
     
 class GetLabResultView(APIView):
-    serializer_class = PatientSerializer
+    serializer_class = LabResultSerializer
     parser_classes = [JSONParser]
 
     def get(self, request, id):
@@ -82,8 +82,28 @@ class GetLabResultView(APIView):
             'statusCode': status.HTTP_400_BAD_REQUEST
         }, status=status.HTTP_400_BAD_REQUEST)
     
+class GetPatientLabResults(APIView):
+    serializer_class = LabResultSerializer
+
+    def get(self, request, patient_id):
+        try:
+            lab_result = LabResult.objects.get(patient_id=patient_id)
+        except:
+            return Response({
+                'status': False,
+                'message': "No Lab Result was found",
+                'statusCode': status.HTTP_404_NOT_FOUND
+            }, status=status.HTTP_404_NOT_FOUND)
+        serializer = self.serializer_class(lab_result, many=True)
+        return Response({
+            'status': True,
+            'message': "Retrieved lab results for patient successfully",
+            'data': serializer.data,
+            'statusCode': status.HTTP_200_OK
+        }, status=status.HTTP_200_OK)
+    
 class ListLabResultsView(APIView):
-    serializer_class = PatientSerializer
+    serializer_class = LabResultSerializer
 
     def get(self, request):
         lab_results = LabResult.objects.all()

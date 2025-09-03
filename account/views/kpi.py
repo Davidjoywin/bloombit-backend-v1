@@ -9,6 +9,7 @@ from ..serializers import KPISerializer
 
 class KPI(APIView):
 
+    serializer_class = KPISerializer
     permission_classes = [IsAdminUser]
 
     def get(self, request):

@@ -1,5 +1,6 @@
 bb_env/
 bloom_env/
+img/
 db.sqlite3
 __pycache__
 */migrations

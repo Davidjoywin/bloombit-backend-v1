@@ -82,6 +82,22 @@ class GetPatientView(APIView):
             'statusCode': status.HTTP_400_BAD_REQUEST
         }, status=status.HTTP_400_BAD_REQUEST)
     
+    def delete(self, request, id):
+        try:
+            patient = Patient.objects.get(id=id)
+            patient.delete()
+            return Response({
+                'status': True,
+                'message': "Patient profile deleted successfully",
+                'statusCode': status.HTTP_204_NO_CONTENT
+            }, status=status.HTTP_204_NO_CONTENT)
+        except Patient.DoesNotExist:
+            return Response({
+                'status': False,
+                'message': "Patient not found",
+                'statusCode': status.HTTP_404_NOT_FOUND
+            }, status=status.HTTP_404_NOT_FOUND)
+    
 class ListPatientsView(APIView):
     serializer_class = PatientSerializer
 

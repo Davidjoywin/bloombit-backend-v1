@@ -2,6 +2,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
+from rest_framework.parsers import JSONParser
 
 from ..utils import create_token
 from ..models import UserProfile
@@ -10,6 +11,7 @@ from ..serializers import UserProfileSerializer
 
 class CreateUser(APIView):
 
+    parser_classes = [JSONParser]
     permission_classes = [AllowAny]
     serializer_class = UserProfileSerializer
     

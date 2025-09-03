@@ -1,8 +1,7 @@
 from django.urls import path
 
 from .views import (
-    Auth, GetUser, AuthenticatedUser, CreateUser, 
-    GetProfessional, KPI, RegisterSpecialist
+    Auth, GetUser, AuthenticatedUser, CreateUser, KPI
 )
 
 urlpatterns = [
@@ -10,9 +9,8 @@ urlpatterns = [
     path('auth', Auth.as_view(), name='login'),
     path('<int:id>', GetUser.as_view(), name='get-user'),
     path('user', AuthenticatedUser.as_view(), name='auth-user'),
-    path('specialist/<int:id>', GetProfessional.as_view(),  name='update-professional'),
     path('kpi', KPI.as_view(), name='KPI'),
 
     # specialist account 
-    path('register-specialist', RegisterSpecialist.as_view(), name='register-specialist'),
+    # path('register-specialist', MedicalSpecialist.as_view(), name='register-specialist'),
 ]

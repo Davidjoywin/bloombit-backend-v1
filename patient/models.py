@@ -1,5 +1,5 @@
 from django.db import models
-from account.models import UserProfile, RegisterSpecialist, SpecialistPersonalInformations
+from account.models import UserProfile, SpecialistPersonalInformations
     
     
 class Vital(models.Model):
@@ -40,7 +40,7 @@ class Medication(models.Model):
     frequency = models.CharField(max_length=30)
     start_date = models.DateField()
     end_date = models.DateField(blank=True, null=True)
-    prescribing_doctor = models.ForeignKey(RegisterSpecialist, on_delete=models.CASCADE)
+    prescribing_doctor = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     patient = models.ForeignKey('Patient', on_delete=models.CASCADE)
     
     def __str__(self):
@@ -51,7 +51,7 @@ class LabResult(models.Model):
     test_name = models.CharField(max_length=50)
     result = models.TextField()
     date_conducted = models.DateField()
-    ordering_doctor = models.ForeignKey(RegisterSpecialist, on_delete=models.CASCADE)
+    ordering_doctor = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     patient = models.ForeignKey('Patient', on_delete=models.CASCADE)
     
     def __str__(self):
@@ -61,7 +61,7 @@ class LabResult(models.Model):
 class ClinicalNote(models.Model):
     note = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    created_by = models.ForeignKey(RegisterSpecialist, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     patient = models.OneToOneField('Patient', on_delete=models.CASCADE)
     
     def __str__(self):

@@ -4,6 +4,7 @@ from drf_spectacular.utils import extend_schema
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
+from rest_framework.parsers import JSONParser
 
 from django.contrib.auth import login
 
@@ -13,6 +14,7 @@ from ..serializers import LoginSerializer, UserProfileSerializer
 
 class Auth(APIView):
     permission_classes = [AllowAny]
+    parser_classes = [JSONParser]
     serializer_class = LoginSerializer
 
     @extend_schema(
