@@ -128,10 +128,10 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'A comprehensive api documentation for api',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
-    # 'SERVERS': [
-    #     {'url': 'http://127.0.0.1:8000', 'description': 'Local development server'},
+    'SERVERS': [
+        {'url': 'http://127.0.0.1:8000', 'description': 'Local development server'},
     #     {'url': 'https://davidjoy.pythonanywhere.com', 'description': 'Production server'},
-    # ],
+    ],
     'SWAGGER_UI_SETTINGS': {
         'persistAuthorization': True,
         'filter': True,
