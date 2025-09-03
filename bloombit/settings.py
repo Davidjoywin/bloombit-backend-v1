@@ -175,6 +175,15 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=int(ACCESS_TOKEN_LIFETIME)),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=int(REFRESH_TOKEN_LIFETIME))
 }
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "http://localhost:8080", 
+    "http://127.0.0.1:8080",
+    "https://davidjoy.pythonanywhere.com"
+]
+
 CORS = {
     'default': {
         'ACCESS_CONTROL_ALLOW_ORIGIN': ['*']
