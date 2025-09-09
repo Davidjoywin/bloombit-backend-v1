@@ -8,7 +8,7 @@ from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from drf_spectacular.utils import extend_schema
 
 from ..models import MedicalSpecialist, Specialization
-from ..serializers import MedicalSpecialistSerializer
+from ..serializers import MedicalSpecialistSerializer, MedicalSpecialistWithDetailedCategorySerializer
 
 
 class CreateMedicalSpecialist(APIView):
@@ -67,7 +67,7 @@ class MedicalSpecialistView(APIView):
         medical_specialist = get_object_or_404(MedicalSpecialist, id=id)
         request_data = request.data
         validated_data = {key: value for key, value in request_data.items()}
-        print("hllo eoere")
+        
         validated_data['languages'] = json.loads(request_data.get('languages', ''))
         validated_data['educations'] = json.loads(request_data.get('educations', '[]'))
         # print(validated_data)
@@ -97,15 +97,16 @@ class MedicalSpecialistView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class MedicalSpecialistByCategoryView(APIView):
-    serializer_class = MedicalSpecialistSerializer
+    serializer_class = MedicalSpecialistWithDetailedCategorySerializer
 
     @extend_schema(
         description="Retrieve medical specialists by specialization slugged_name",
         summary="Retrieve Medical Specialists by Specialization"
     )
     def get(self, request, slugged_name):
-        specialization = get_object_or_404(Specialization, slugged_name=slugged_name)
-        medical_specialists = MedicalSpecialist.objects.filter(specialization=specialization)
+        # specialization = get_object_or_404(Specialization, slugged_name=slugged_name)
+        # specialization = Specialization.objects.first()
+        medical_specialists = MedicalSpecialist.objects.filter(specialization__slugged_name=slugged_name)
         serializer = self.serializer_class(medical_specialists, many=True)
         return Response({
             "status": True,
@@ -115,7 +116,8 @@ class MedicalSpecialistByCategoryView(APIView):
         }, status=status.HTTP_200_OK)
     
 class AllMedicalSpecialistView(APIView):
-    serializer_class = MedicalSpecialistSerializer
+    # serializer_class = MedicalSpecialistSerializer
+    serializer_class = MedicalSpecialistWithDetailedCategorySerializer
 
     @extend_schema(
         description="Retrieve all medical specialists",

@@ -32,6 +32,7 @@ class Specialization(models.Model):
     def sluggify(self):
         return '-'.join(self.name.lower().split(' '))
     
+    
 class AvailabilityTime(models.Model):
     hour_daily = models.DateTimeField()
     is_available = models.BooleanField(default=False)

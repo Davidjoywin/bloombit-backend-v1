@@ -14,6 +14,11 @@ class SpecializationSerializer(ModelSerializer):
         model = Specialization
         fields = "__all__"
         read_only_fields = ["slugged_name", "count"]
+
+    def validate(self, attrs):
+        print(attrs)
+        attrs['slugged_name'] = '-'.join(attrs['name'].lower().split(' '))
+        return attrs
     
     def create(self, validated_data):
         specialization = Specialization.objects.create(**validated_data)
@@ -55,10 +60,10 @@ class MedicalSpecialistSerializer(ModelSerializer):
     # professional_details = SpecialistProfessionalDetailSerializer()
     # verification_documents = SpecialistVerificationDocumentSerializer()
     # agreements = SpecialistAgreementSerializer()
+    # specialization = CategorySerializer()
     languages = LanguageSerializer(source='language_set', many=True)
     educations = EducationSerializer(source='education_set', many=True)
 
-    
     class Meta:
         model = MedicalSpecialist
         fields = "__all__"
@@ -99,3 +104,28 @@ class MedicalSpecialistSerializer(ModelSerializer):
             return instance
         return instance
         
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Specialization
+        fields = ["id", "name", "description"]
+
+# name
+# specialization
+# location
+# experience
+# educations
+# profile_photo
+
+class MedicalSpecialistWithDetailedCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model=MedicalSpecialist
+        fields=[
+            "id", "prefix", "firstname", "lastname", "specialization",
+            "address", "educations", "profile_photo", "years_of_experience"
+        ]
+
+    specialization = CategorySerializer()
+    # languages = LanguageSerializer(source='language_set', many=True)
+    educations = EducationSerializer(source='education_set', many=True)
+
+    
