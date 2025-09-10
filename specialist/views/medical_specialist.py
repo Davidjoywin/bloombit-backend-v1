@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 
 from rest_framework import status, viewsets
 from rest_framework.views import APIView
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from drf_spectacular.utils import extend_schema
@@ -114,9 +115,15 @@ class MedicalSpecialistByCategoryView(APIView):
             "data": serializer.data,
             "statusCode": status.HTTP_200_OK
         }, status=status.HTTP_200_OK)
+        
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = "page_size"
+    max_page_size = 100
     
 class AllMedicalSpecialistView(APIView):
     # serializer_class = MedicalSpecialistSerializer
+    pagination_class = StandardResultsSetPagination
     serializer_class = MedicalSpecialistWithDetailedCategorySerializer
 
     @extend_schema(

@@ -2,15 +2,17 @@ import time
 import pytz
 import datetime
 # from multiprocessing import Process
-from threading import Thread
+# from threading import Thread
 
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 from django.shortcuts import redirect
 from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
-from consult.models import Consultation
-from utils.schedule import unbookProfessional
+# from consult.models import Consultation
+# from utils.schedule import unbookProfessional
 
 # def background():
 #     consultations = Consultation.objects.filter(consult_done=False)
@@ -51,4 +53,4 @@ urlpatterns = [
     # OpenAPI Schema: This serves the schema as a JSON file
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
