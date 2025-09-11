@@ -1,4 +1,4 @@
-from .patient_view import CreatePatient, GetPatientView, ListPatientsView
+from .patient_view import CreatePatient, AuthPatientView, GetPatientView, ListPatientsView
 from .patient_vitals import GetPatientVitals, AuthPatientVitals, GetPatientVital, CreatePatientVitals
 
 from .allergy import CreateAllergyView, GetAllergyView, GetPatientAllergies, ListAllergiesView

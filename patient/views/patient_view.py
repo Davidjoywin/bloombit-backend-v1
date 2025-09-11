@@ -2,9 +2,11 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
+from rest_framework.permissions import IsAuthenticated
+
 from drf_spectacular.utils import extend_schema
 
-from ..models import Patient
+from ..models import Patient, UserProfile
 from ..serializers import PatientSerializer
 
 
@@ -31,6 +33,31 @@ class CreatePatient(APIView):
             'error': serializer.errors,
             'statusCode': status.HTTP_400_BAD_REQUEST
         }, status=status.HTTP_400_BAD_REQUEST)
+    
+class AuthPatientView(APIView):
+    parser_classes = [JSONParser]
+    permission_classes = [IsAuthenticated]
+    serializer_class = PatientSerializer
+
+    def get(self, request):
+        auth_user_id = request.user.id
+        print(auth_user_id)
+        user_profile = UserProfile.objects.get(id=auth_user_id)
+        print(user_profile.account_type)
+        if user_profile.account_type == 'patient':
+            patient = user_profile.patient
+            serializer = PatientSerializer(patient, many=False)
+            return Response({
+                'status': True,
+                'message': "Patient retrieved successfully",
+                'data': serializer.data,
+                'statusCode': status.HTTP_200_OK
+            }, status=status.HTTP_200_OK)
+        return Response({
+            'status': False,
+            'message': "User account type should be patient",
+            'statusCode': status.HTTP_307_TEMPORARY_REDIRECT
+        }, status=status.HTTP_307_TEMPORARY_REDIRECT)
     
 class GetPatientView(APIView):
     serializer_class = PatientSerializer

@@ -5,13 +5,14 @@ from .views import (
     CreateLabResultView, GetLabResultView, GetPatientLabResults, ListLabResultsView,
     CreateMedicationView, GetMedicationView, GetPatientMedications, ListMedicationsView,
     CreateClinicalNoteView, GetClinicalNoteView, GetPatientClinicalNotes, ListClinicalNotesView,
-    CreateMedicalConditionView, GetMedicalConditionView, GetPatientMedicalConditions, ListMedicalConditionsView,
-    AuthPatientVitals, GetPatientVital, CreatePatientVitals, CreatePatient, GetPatientView, GetPatientVitals, ListPatientsView
+    CreateMedicalConditionView, GetMedicalConditionView, GetPatientMedicalConditions, ListMedicalConditionsView, 
+    AuthPatientVitals, GetPatientVital, CreatePatientVitals, CreatePatient, AuthPatientView, GetPatientView, GetPatientVitals, ListPatientsView
 )
 
 
 urlpatterns = [
     # Patient endpoints
+    path('', AuthPatientView.as_view(), name='auth-patient'),
     path('create', CreatePatient.as_view(), name='create-patient'),
     path('<int:id>', GetPatientView.as_view(), name='get-patient'),
     path('all', ListPatientsView.as_view(), name='list-patients'),

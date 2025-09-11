@@ -129,10 +129,10 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'A comprehensive api documentation for api',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
-    'SERVERS': [
-        {'url': 'http://127.0.0.1:8000', 'description': 'Local development server'},
-        {'url': 'https://davidjoy.pythonanywhere.com', 'description': 'Production server'},
-    ],
+    # 'SERVERS': [
+    #     {'url': 'http://127.0.0.1:8000', 'description': 'Local development server'},
+    #     {'url': 'https://davidjoy.pythonanywhere.com', 'description': 'Production server'},
+    # ],
     'SWAGGER_UI_SETTINGS': {
         'persistAuthorization': True,
         'filter': True,
@@ -156,6 +156,7 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.MultiPartParser'
     ],
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
 }
 
 # CSP_DEFAULT_SRC = ("'self'",)
