@@ -2,6 +2,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
+from rest_framework.permissions import IsAuthenticated
 from drf_spectacular.utils import extend_schema
 
 from django.shortcuts import get_object_or_404
@@ -12,6 +13,7 @@ from ..models import Patient, Vital, UserProfile
 
 class CreatePatientVitals(APIView):
     serializer_class = VitalSerializer
+    permission_classes = [IsAuthenticated]
     parser_classes = [JSONParser]
 
     @extend_schema(
@@ -38,6 +40,7 @@ class CreatePatientVitals(APIView):
 class AuthPatientVitals(APIView):
 
     serializer_class = VitalSerializer
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         auth_user = request.user
@@ -54,8 +57,9 @@ class AuthPatientVitals(APIView):
 
 class GetPatientVital(APIView):
 
-    serializer_class = VitalSerializer
     parser_classes = [JSONParser]
+    serializer_class = VitalSerializer
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, vital_id):
         auth_user_id = request.user.id
