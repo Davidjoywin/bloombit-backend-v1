@@ -12,14 +12,24 @@ from ..utils import create_token
 from ..models import UserProfile
 from ..serializers import LoginSerializer, UserProfileSerializer
 
+class CheckAuthStatus(APIView):
+    def get(self, request):
+        access_token = request.COOKIES.get("bloombit-access-token")
+        print(request.COOKIES)
+        print(access_token)
+        if access_token:
+            return Response({'message': "You're logged in. Cookie is active"})
+        return Response({'message': "You're not logged in yet. Cookie isn't active yet."})
+
 class Auth(APIView):
     permission_classes = [AllowAny]
     parser_classes = [JSONParser]
     serializer_class = LoginSerializer
 
     @extend_schema(
-        request=LoginSerializer,
-        responses={200: UserProfileSerializer, 400: {"message": "Login failed"}}
+        summary="Login a user"
+        # request=LoginSerializer,
+        # responses={200: UserProfileSerializer, 400: {"message": "Login failed"}}
     )
     def post(self, request):
         serializer = self.serializer_class(data=request.data, context={'request': request})
@@ -40,7 +50,8 @@ class Auth(APIView):
                 login(request, user)
                 user_serializer = UserProfileSerializer(user, context={'request': request})
                 token = create_token(user)
-                return Response(
+                
+                response = Response(
                     {
                         'status': True,
                         'message': "Login successfully",
@@ -50,6 +61,14 @@ class Auth(APIView):
                     },
                     status=status.HTTP_200_OK
                 )
+                response.set_cookie(
+                    key='bloombit-access-token',
+                    value=token['access']['token'],
+                    httponly=True,
+                    secure=False,    # Recommended: only send over HTTPS
+                    samesite='None', # Recommended: CSRF protection
+                )
+                return response
             except:
                 return Response(
                     {

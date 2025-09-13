@@ -1,10 +1,11 @@
 from django.urls import path
 
 from .views import (
-    Auth, GetUser, AuthenticatedUser, CreateUser, KPI
+    Auth, GetUser, AuthenticatedUser, CreateUser, KPI, CheckAuthStatus
 )
 
 urlpatterns = [
+    path('test-auth', CheckAuthStatus.as_view()),
     path('register', CreateUser.as_view(), name='register'),
     path('auth', Auth.as_view(), name='login'),
     path('<int:id>', GetUser.as_view(), name='get-user'),

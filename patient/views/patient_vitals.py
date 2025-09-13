@@ -17,7 +17,8 @@ class CreatePatientVitals(APIView):
     parser_classes = [JSONParser]
 
     @extend_schema(
-        request=serializer_class
+        request=serializer_class,
+        summary="Create a vital for a patient"
     )
     def post(self, request):
         serializer = self.serializer_class(data=request.data, context={"request": request})
@@ -42,6 +43,10 @@ class AuthPatientVitals(APIView):
     serializer_class = VitalSerializer
     permission_classes = [IsAuthenticated]
 
+    @extend_schema(
+        request=serializer_class,
+        summary="Get all  vitals for authenticated patient"
+    )
     def get(self, request):
         auth_user = request.user
         user_profile = UserProfile.objects.get(username=auth_user.username)
@@ -61,6 +66,10 @@ class GetPatientVital(APIView):
     serializer_class = VitalSerializer
     permission_classes = [IsAuthenticated]
 
+    @extend_schema(
+        request=serializer_class,
+        summary="Get a particular vital item"
+    )
     def get(self, request, vital_id):
         auth_user_id = request.user.id
         patient = get_object_or_404(Patient, id=auth_user_id)
@@ -74,7 +83,8 @@ class GetPatientVital(APIView):
         }, status=status.HTTP_200_OK)
 
     @extend_schema(
-        request=serializer_class
+        request=serializer_class,
+        summary="Update a vital item"
     )
     def put(self, request, vital_id):
         auth_user_id = request.user.id
@@ -97,6 +107,10 @@ class GetPatientVital(APIView):
             'statusCode': status.HTTP_400_BAD_REQUEST
         }, status=status.HTTP_400_BAD_REQUEST)
     
+    @extend_schema(
+        request=serializer_class,
+        summary="Delete a vital item"
+    )
     def delete(self, request, vital_id):
         auth_user_id = request.user.id
         patient = get_object_or_404(Patient, id=auth_user_id)
@@ -109,9 +123,12 @@ class GetPatientVital(APIView):
         }, status=status.HTTP_204_NO_CONTENT)
     
 class GetPatientVitals(APIView):
-
     serializer_class = VitalSerializer
 
+    @extend_schema(
+        request=serializer_class,
+        summary="Get all vitals for a patient"
+    )
     def get(self, request, patient_id):
         patient = get_object_or_404(Patient, id=patient_id)
         vitals = patient.vital_set.all()

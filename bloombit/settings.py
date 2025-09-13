@@ -175,7 +175,13 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=int(ACCESS_TOKEN_LIFETIME)),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=int(REFRESH_TOKEN_LIFETIME))
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=int(REFRESH_TOKEN_LIFETIME)),
+    'AUTH_COOKIE': 'access_token',
+    'AUTH_COOKIE_DOMAIN': None,
+    'AUTH_COOKIE_SECURE': True,
+    'AUTH_COOKIE_HTTP_ONLY': True,
+    'AUTH_COOKIE_SAMESITE': 'Lax',
+    'AUTH_COOKIE_PATH': '/',
 }
 
 CORS = {

@@ -4,8 +4,8 @@ from .views import (
     CreateAllergyView, GetAllergyView, GetPatientAllergies, ListAllergiesView,
     CreateLabResultView, GetLabResultView, GetPatientLabResults, ListLabResultsView,
     CreateMedicationView, GetMedicationView, GetPatientMedications, ListMedicationsView,
-    CreateClinicalNoteView, GetClinicalNoteView, GetPatientClinicalNotes, ListClinicalNotesView,
-    CreateMedicalConditionView, GetMedicalConditionView, GetPatientMedicalConditions, ListMedicalConditionsView, 
+    CreateClinicalNoteView, GetClinicalNoteView, GetPatientClinicalNotes, GetAuthPatientClinicalNotes, 
+    ListClinicalNotesView, CreateMedicalConditionView, GetMedicalConditionView, GetPatientMedicalConditions, ListMedicalConditionsView, 
     AuthPatientVitals, GetPatientVital, CreatePatientVitals, CreatePatient, AuthPatientView, GetPatientView, GetPatientVitals, ListPatientsView
 )
 
@@ -51,5 +51,6 @@ urlpatterns = [
     path('clinical-note/create', CreateClinicalNoteView.as_view(), name='create-clinical-note'),
     path('clinical-note/<int:id>', GetClinicalNoteView.as_view(), name='get-clinical-note'),
     path('clinical-notes', ListClinicalNotesView.as_view(), name='list-clinical-notes'),
+    path('clinical-notes/auth', GetAuthPatientClinicalNotes.as_view(), name='auth-clinical-notes'),
     path('patient-clinical-notes/<int:patient_id>', GetPatientClinicalNotes.as_view(), name='patient-clinical-notes')
 ]
